@@ -1,4 +1,4 @@
-type Node = usize;
+pub type Node = usize;
 type Neighbours = Vec<Node>;
 
 #[derive(Debug)]
