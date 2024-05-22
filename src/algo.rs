@@ -1,7 +1,7 @@
 use crate::*;
 
 // Data[x] is the vector of x.
-pub type Data = Vec<Vec<f64>>;
+pub type Data = Vec<Vec<R64>>;
 
 pub fn springs(g: &Graph) -> Data {
     let mut d = init_data(g);
@@ -13,7 +13,7 @@ pub fn springs(g: &Graph) -> Data {
     d
 }
 
-type Force = Vec<f64>;
+type Force = Vec<R64>;
 
 fn step(g: &Graph, d: &mut Data) {
     // forces[i] is the resulting force we will apply to node i.
@@ -42,29 +42,29 @@ fn compute_force(i: Node, j: Node, d: &Data) -> Force {
     let j = &d[j];
 
     // i - j
-    let delta: Vec<f64> = i.iter().zip(j.iter()).map(|(x, y)| x-y).collect();
+    let delta: Vec<R64> = i.iter().zip(j.iter()).map(|(x, y)| *x - *y).collect();
 
     // ||i-j||
-    let dist = sum_fair(delta.iter().map(|x| x*x).collect()).sqrt();
+    let dist = sum_fair(delta.iter().map(|x| (*x) * (*x)).collect()).sqrt();
     let offset = dist - 1.0;
 
-    let force = delta.iter().map(|x| x * -offset * 0.001).collect();
+    let force = delta.iter().map(|x| (*x) * -offset * r64(0.001)).collect();
     force
 }
 
 fn init_data(g: &Graph) -> Data {
     let mut d = Data::new();
     for _ in g.nodes() {
-        d.push(vec![0.0; g.n()]);
+        d.push(vec![r64(0.0); g.n()]);
     }
     for i in g.nodes() {
-        d[i][i] = 1.0;
+        d[i][i] = r64(1.0);
     }
 
     d
 }
 
-fn add_to(a: &mut [f64], b: &[f64]) {
+fn add_to(a: &mut [R64], b: &[R64]) {
     for i in 0..a.len() {
         a[i] += b[i];
     }
@@ -72,7 +72,7 @@ fn add_to(a: &mut [f64], b: &[f64]) {
 
 // sum([v1, v2, v3, ..., vn]) = v1 + v2 + ... + vn.
 fn sum(forces: Vec<Force>, n: usize) -> Force {
-    let mut out = vec![0.0; n];
+    let mut out = vec![r64(0.0); n];
     for i in 0..n {
         let mut v = Vec::new();
         for f in &forces {
@@ -83,7 +83,7 @@ fn sum(forces: Vec<Force>, n: usize) -> Force {
     out
 }
 
-fn sum_fair(mut v: Vec<f64>) -> f64 {
-    v.sort_by(|a, b| a.partial_cmp(b).unwrap());
+fn sum_fair(mut v: Vec<R64>) -> R64 {
+    v.sort();
     v.into_iter().sum()
 }

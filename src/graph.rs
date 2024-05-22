@@ -41,7 +41,7 @@ impl Graph {
         }
 
         let mut g = Vec::new();
-        for i in 0..=max {
+        for _ in 0..=max {
             g.push(Vec::new());
         }
 

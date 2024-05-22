@@ -1,3 +1,6 @@
+pub use noisy_float::types::{R64, r64};
+pub use noisy_float::prelude::Float;
+
 mod graph;
 pub use graph::*;
 
@@ -5,18 +8,10 @@ mod algo;
 pub use algo::*;
 
 fn unorder(d: &mut Data) {
-    use std::cmp::Ordering;
-
-    let srt = |a: &f64, b: &f64| a.partial_cmp(b).unwrap();
-
     for x in d.iter_mut() {
-        x.sort_by(srt);
+        x.sort();
     }
-
-    d.sort_by(|v1, v2| {
-        v1.iter().zip(v2.iter()).map(|(x, y)| srt(x, y))
-        .fold(Ordering::Equal, Ordering::then)
-    });
+    d.sort();
 }
 
 fn is_isomorphic(g1: &Graph, g2: &Graph) -> bool {
