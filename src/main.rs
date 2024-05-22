@@ -1,7 +1,10 @@
 mod graph;
-use graph::*;
+pub use graph::*;
+
+mod algo;
+pub use algo::*;
 
 fn main() {
     let g = Graph::parse_file("input.txt");
-    dbg!(&g);
+    let d = springs(&g);
 }

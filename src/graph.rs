@@ -17,6 +17,15 @@ impl Graph {
         Self::parse(&s)
     }
 
+    // number of nodes.
+    pub fn n(&self) -> usize { self.0.len() }
+
+    pub fn nodes(&self) -> impl Iterator<Item=Node> { 0..self.n() }
+
+    pub fn neighbours(&self, n: Node) -> &[Node] {
+        &self.0[n]
+    }
+
     pub fn parse(s: &str) -> Graph {
         let mut edges = Vec::new();
         let mut max = 0;
