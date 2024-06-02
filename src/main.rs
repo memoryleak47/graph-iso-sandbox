@@ -11,7 +11,10 @@ mod iso;
 pub use iso::*;
 
 fn main() {
-    let g1 = Graph::parse_file("1.g");
-    let g2 = Graph::parse_file("2.g");
+    let arg = |i| std::env::args().nth(i)
+                                  .map(|x| x.to_string())
+                                  .unwrap_or(format!("{}.g", i));
+    let g1 = Graph::parse_file(&arg(1));
+    let g2 = Graph::parse_file(&arg(2));
     dbg!(is_isomorphic(&g1, &g2));
 }
