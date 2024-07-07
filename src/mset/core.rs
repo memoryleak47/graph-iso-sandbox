@@ -30,6 +30,27 @@ impl<T> MSet<T> {
         self.data.retain(f);
     }
 
+    pub fn union(&self, other: &MSet<T>) -> MSet<T>
+        where T: Clone
+    {
+        let mut out = MSet::new();
+        for x in &self.data { out.insert(x.clone()); }
+            for x in &other.data { out.insert(x.clone()); }
+        out
+    }
+
+    pub fn dedup(&self) -> MSet<T>
+        where T: Clone + Eq
+    {
+        let mut out = MSet::new();
+        for x in &self.data {
+            if !out.contains(x) {
+                out.insert(x.clone());
+            }
+        }
+        out
+    }
+
     pub fn try_sort_by_key<U>(&self, f: impl Fn(&T) -> U) -> Option<Vec<T>>
         where T: Clone + Eq,
               U: Ord
@@ -53,6 +74,20 @@ impl<T> MSet<T> {
         }
 
         Some(l)
+    }
+}
+
+impl<T> MSet<MSet<T>> {
+    pub fn flatten(&self) -> MSet<T>
+        where T: Clone
+    {
+        let mut out = MSet::new();
+        for x in &self.data {
+            for y in &x.data {
+                out.insert(y.clone());
+            }
+        }
+        out
     }
 }
 
