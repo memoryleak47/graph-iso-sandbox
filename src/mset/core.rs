@@ -1,5 +1,9 @@
 // A multi set.
 // Two MSets with a different permutation of the same elements should never be able to be distinguished.
+// Invariants for that:
+// - If a == b (by the Eq trait), then a and b are indistuishable.
+// - Each Ord implementation is truly a total order
+// - Looking at the raw bits of a datastructure using unsafe is forbidden. Similarly pointer to int casts (and related things) are forbidden.
 #[derive(Clone)]
 pub struct MSet<T> {
     data: Vec<T>,
