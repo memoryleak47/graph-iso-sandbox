@@ -5,7 +5,7 @@ impl<T> MSet<T> {
     pub fn sort_by(&self, f: impl Fn(&T, &T) -> Ordering) -> Vec<T>
         where T: Clone + Eq,
     {
-        self.try_sort_by(f).expect("Not all elements could be sorted!")
+        self.try_sort_by(f).into_iter().map(|x| x.get_unique().unwrap()).collect()
     }
 
     // panics if the sorting results in non-determinism.

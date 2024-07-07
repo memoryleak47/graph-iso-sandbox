@@ -18,6 +18,17 @@ impl<T> MSet<T> {
         MSet { data: Vec::new() }
     }
 
+    // if all elements are the same, return any of them.
+    pub fn get_unique(&self) -> Option<T>
+        where T: Clone + Eq
+    {
+        let out: &T = self.data.get(0)?;
+        for x in &self.data {
+            if x != out { return None; }
+        }
+        Some(out.clone())
+    }
+
     pub fn insert(&mut self, t: T) {
         self.data.push(t);
     }
@@ -59,24 +70,23 @@ impl<T> MSet<T> {
     }
 
     // INV: Breaks invariants if the comparator function doesn't define a total order!
-    pub fn try_sort_by(&self, f: impl Fn(&T, &T) -> Ordering) -> Option<Vec<T>>
+    pub fn try_sort_by(&self, f: impl Fn(&T, &T) -> Ordering) -> Vec<MSet<T>>
         where T: Clone + Eq,
     {
         let mut l = self.data.clone();
         l.sort_by(|x, y| f(x, y));
 
-        for i in 0..l.len()-1 {
-            let a = &l[i];
-            let b = &l[i+1];
-
-            // If two elements aren't strictly orderable, they have to be equal.
-            // Otherwise different input isomorphisms might lead to different orderings in the resulting Vec.
-            if matches!(f(a, b), Ordering::Equal) && a != b {
-                return None;
+        let mut out: Vec<MSet<T>> = Vec::new();
+        for x in l {
+            if out.last().map(|y| y.contains(&x)).unwrap_or(false) {
+                out.last_mut().unwrap().insert(x);
+            } else {
+                let mut new = MSet::new();
+                new.insert(x);
+                out.push(new);
             }
         }
-
-        Some(l)
+        out
     }
 
     pub fn group_by<U>(&self, f: impl Fn(&T) -> U) -> MSet<(U, MSet<T>)>
