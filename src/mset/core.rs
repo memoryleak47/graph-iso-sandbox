@@ -5,7 +5,7 @@ pub struct MSet<T> {
 
 // This is the core API of multiset.
 // You should never be able to extract an arbitrary asymmetry from the elements of `data` from it.
-impl<T: Eq> MSet<T> {
+impl<T> MSet<T> {
     pub fn new() -> Self {
         MSet { data: Vec::new() }
     }
@@ -14,19 +14,28 @@ impl<T: Eq> MSet<T> {
         self.data.push(t);
     }
 
-    pub fn contains(&self, t: &T) -> bool {
+    pub fn contains(&self, t: &T) -> bool
+        where T: Eq
+    {
         self.data.contains(t)
     }
 
-    pub fn map<U>(&self, f: impl Fn(T) -> U) -> MSet<U> where T: Clone {
+    pub fn map<U>(&self, f: impl Fn(T) -> U) -> MSet<U>
+        where T: Clone
+    {
         self.data.iter().cloned().map(f).collect()
     }
 
-    pub fn filter(&self, f: impl Fn(&T) -> bool) -> MSet<T> where T: Clone {
+    pub fn filter(&self, f: impl Fn(&T) -> bool) -> MSet<T>
+        where T: Clone
+    {
         self.data.iter().cloned().filter(f).collect()
     }
 
-    pub fn try_sort_by_key<U: Ord>(&self, f: impl Fn(&T) -> U) -> Option<Vec<T>> where T: Clone {
+    pub fn try_sort_by_key<U>(&self, f: impl Fn(&T) -> U) -> Option<Vec<T>>
+        where T: Clone + Eq,
+              U: Ord
+    {
         use std::cmp::Ordering;
 
         let mut l = self.data.clone();
@@ -50,7 +59,9 @@ impl<T: Eq> MSet<T> {
 }
 
 impl<A> FromIterator<A> for MSet<A> {
-    fn from_iter<T>(iter: T) -> Self where T: IntoIterator<Item=A> {
+    fn from_iter<T>(iter: T) -> Self
+        where T: IntoIterator<Item=A>
+    {
         MSet { data: iter.into_iter().collect() }
     }
 }
