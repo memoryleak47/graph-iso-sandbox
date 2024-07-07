@@ -1,11 +1,11 @@
 // A multi set.
+// Two MSets with a different permutation of the same elements should never be able to be distinguished.
 #[derive(Clone)]
 pub struct MSet<T> {
     data: Vec<T>,
 }
 
 // This is the core API of multiset.
-// You should never be able to extract an arbitrary asymmetry from the elements of `data` from it.
 impl<T> MSet<T> {
     pub fn new() -> Self {
         MSet { data: Vec::new() }
