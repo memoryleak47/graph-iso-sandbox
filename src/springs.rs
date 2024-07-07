@@ -1,9 +1,27 @@
 use crate::*;
 
-// Data[x] is the vector of x.
-pub type Data = Vec<Vec<R64>>;
+pub fn springs_iso_check(g1: &Graph, g2: &Graph) -> bool {
+    let mut d1 = springs(g1);
+    let mut d2 = springs(g2);
+    unorder(&mut d1);
+    unorder(&mut d2);
 
-pub fn springs(g: &Graph) -> Data {
+    d1 == d2
+}
+
+
+fn unorder(d: &mut Data) {
+    for x in d.iter_mut() {
+        x.sort();
+    }
+    d.sort();
+}
+
+
+// Data[x] is the vector of x.
+type Data = Vec<Vec<R64>>;
+
+fn springs(g: &Graph) -> Data {
     let mut d = init_data(g);
     for _ in g.nodes() {
         for _ in g.nodes() {
@@ -87,3 +105,5 @@ fn sum_fair(mut v: Vec<R64>) -> R64 {
     v.sort();
     v.into_iter().sum()
 }
+
+
