@@ -21,16 +21,13 @@ impl<T> MSet<T> {
         self.data.contains(t)
     }
 
-    pub fn map<U>(&self, f: impl Fn(T) -> U) -> MSet<U>
-        where T: Clone
+    pub fn map_ref<U>(&self, f: impl Fn(&T) -> U) -> MSet<U>
     {
-        self.data.iter().cloned().map(f).collect()
+        self.data.iter().map(f).collect()
     }
 
-    pub fn filter(&self, f: impl Fn(&T) -> bool) -> MSet<T>
-        where T: Clone
-    {
-        self.data.iter().cloned().filter(f).collect()
+    pub fn retain(&mut self, f: impl Fn(&T) -> bool) {
+        self.data.retain(f);
     }
 
     pub fn try_sort_by_key<U>(&self, f: impl Fn(&T) -> U) -> Option<Vec<T>>

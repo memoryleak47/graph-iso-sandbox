@@ -15,6 +15,20 @@ impl<T> MSet<T> {
         self.sort_by_key(|x| x.clone())
     }
 
+    pub fn map<U>(&self, f: impl Fn(T) -> U) -> MSet<U>
+        where T: Clone
+    {
+        self.map_ref(|x| f(x.clone()))
+    }
+
+    pub fn filter(&self, f: impl Fn(&T) -> bool) -> MSet<T>
+        where T: Clone
+    {
+        let mut out = self.clone();
+        out.retain(f);
+        out
+    }
+
     pub fn len(&self) -> usize
         where T: Clone
     {
