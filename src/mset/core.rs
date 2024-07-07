@@ -4,6 +4,7 @@
 // - If a == b (by the Eq trait), then a and b are indistuishable.
 // - Each Ord implementation is truly a total order
 // - Looking at the raw bits of a datastructure using unsafe is forbidden. Similarly pointer to int casts (and related things) are forbidden.
+// - Cloning an object yields an indistinguishable object.
 #[derive(Clone)]
 pub struct MSet<T> {
     data: Vec<T>,
