@@ -2,6 +2,7 @@
 
 pub use noisy_float::types::{R64, r64};
 pub use noisy_float::prelude::Float;
+use std::cmp::Ordering;
 
 mod graph;
 pub use graph::*;
