@@ -15,10 +15,8 @@ impl<T> MSet<T> {
         out
     }
 
-    pub fn len(&self) -> usize
-        where T: Clone
-    {
-        self.map(|_| 1).sum()
+    pub fn len(&self) -> usize {
+        self.map_ref(|_| 1).sum()
     }
 }
 
