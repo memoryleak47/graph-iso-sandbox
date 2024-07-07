@@ -75,6 +75,22 @@ impl<T> MSet<T> {
 
         Some(l)
     }
+
+    pub fn group_by<U>(&self, f: impl Fn(&T) -> U) -> MSet<(U, MSet<T>)>
+        where T: Clone,
+              U: Eq
+    {
+        let mut out = MSet::new();
+        for x in &self.data {
+            let u = f(x);
+            let i = out.data.iter().position(|(u2, _)| u2 == &u).unwrap_or_else(|| {
+                out.data.push((u, MSet::new()));
+                out.data.len()-1
+            });
+            out.data[i].1.insert((*x).clone());
+        }
+        out
+    }
 }
 
 impl<T> MSet<MSet<T>> {
