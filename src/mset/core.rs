@@ -53,7 +53,7 @@ impl<T> MSet<T> {
     {
         let mut out = MSet::new();
         for x in &self.data { out.insert(x.clone()); }
-            for x in &other.data { out.insert(x.clone()); }
+        for x in &other.data { out.insert(x.clone()); }
         out
     }
 
