@@ -4,6 +4,15 @@ pub use noisy_float::prelude::Float;
 mod graph;
 pub use graph::*;
 
+mod symbol;
+pub use symbol::*;
+
+mod simulation;
+pub use simulation::*;
+
+mod collections;
+pub use collections::*;
+
 mod algo;
 pub use algo::*;
 
