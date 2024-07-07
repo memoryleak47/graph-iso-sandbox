@@ -1,3 +1,5 @@
+#![allow(unused_imports)]
+
 pub use noisy_float::types::{R64, r64};
 pub use noisy_float::prelude::Float;
 
@@ -10,8 +12,8 @@ pub use symbol::*;
 mod simulation;
 pub use simulation::*;
 
-mod collections;
-pub use collections::*;
+mod mset;
+pub use mset::*;
 
 mod springs;
 pub use springs::*;

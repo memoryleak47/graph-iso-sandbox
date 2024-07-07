@@ -8,15 +8,15 @@ pub struct Symbol(usize);
 // Thus permuting the nodes in a SymbolGraph yields an indistinguishable SymbolGraph.
 // That is useful for isomorphism-invariant algorithms.
 pub struct SymbolGraph {
-    pub nodes: Set<Symbol>,
-    pub edges: Set<(Symbol, Symbol)>,
+    pub nodes: MSet<Symbol>,
+    pub edges: MSet<(Symbol, Symbol)>,
 }
 
 impl SymbolGraph {
     pub fn from(g: &Graph) -> Self {
         let n = g.n();
-        let mut nodes = Set::new();
-        let mut edges = Set::new();
+        let mut nodes = MSet::new();
+        let mut edges = MSet::new();
         for i in 0..n {
             nodes.insert(Symbol(i));
             for &n in g.neighbours(i) {
