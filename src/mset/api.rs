@@ -54,7 +54,7 @@ impl<K, V> MMap<K, V>
     {
         let k = b.borrow();
         self.filter(|(k2, _)| k2 == k)
-            .map(|(_, v)| v)
+            .values()
             .get_unique()
     }
 
