@@ -4,7 +4,7 @@ use std::cmp::Ordering;
 // Two MSets with a different permutation of the same elements should never be able to be distinguished.
 // Invariants for that:
 // - If a == b (by the Eq trait), then a and b are indistuishable.
-// - Each Ord implementation / sort_by comparator function is truly a total order
+// - Each Ord implementation is truly a total order. Thus if a != b, then either a < b, or a > b.
 // - Looking at the raw bits of a datastructure using unsafe is forbidden. Similarly pointer to int casts (and related things) are forbidden.
 // - Cloning an object yields an indistinguishable object.
 #[derive(Clone)]
@@ -69,23 +69,11 @@ impl<T> MSet<T> {
         out
     }
 
-    // INV: Breaks invariants if the comparator function doesn't define a total order!
-    pub fn try_sort_by(&self, f: impl Fn(&T, &T) -> Ordering) -> Vec<MSet<T>>
-        where T: Clone + Eq,
+    pub fn sorted(&self) -> Vec<T>
+        where T: Clone + Eq + Ord,
     {
-        let mut l = self.data.clone();
-        l.sort_by(|x, y| f(x, y));
-
-        let mut out: Vec<MSet<T>> = Vec::new();
-        for x in l {
-            if out.last().map(|y| y.contains(&x)).unwrap_or(false) {
-                out.last_mut().unwrap().insert(x);
-            } else {
-                let mut new = MSet::new();
-                new.insert(x);
-                out.push(new);
-            }
-        }
+        let mut out = self.data.clone();
+        out.sort();
         out
     }
 
