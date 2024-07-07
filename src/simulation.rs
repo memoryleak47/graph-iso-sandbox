@@ -5,6 +5,7 @@ pub trait Simulation {
     fn simulate(g: &SymbolGraph) -> Self::Footprint;
 }
 
+#[derive(Debug)]
 pub enum FootprintResult<T> {
     Equal(T),
     Different(T, T),

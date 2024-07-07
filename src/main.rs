@@ -25,5 +25,5 @@ fn main() {
                                   .unwrap_or(format!("{}.g", i));
     let g1 = Graph::parse_file(&arg(1));
     let g2 = Graph::parse_file(&arg(2));
-    dbg!(springs_iso_check(&g1, &g2));
+    dbg!(witness_non_isomorphism::<Springs>(&g1, &g2));
 }
