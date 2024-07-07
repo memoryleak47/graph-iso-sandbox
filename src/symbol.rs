@@ -1,7 +1,7 @@
 use crate::*;
 
 // Converting nodes to Symbols makes them isomorphism invariant.
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Clone)]
 pub struct Symbol(usize);
 
 // A SymbolGraph is a graph, but its nodes have no order.

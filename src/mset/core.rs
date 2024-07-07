@@ -1,4 +1,5 @@
 // A multi set.
+#[derive(Clone)]
 pub struct MSet<T> {
     data: Vec<T>,
 }
@@ -66,3 +67,18 @@ impl<A> FromIterator<A> for MSet<A> {
     }
 }
 
+impl<T> PartialEq<MSet<T>> for MSet<T>
+    where T: PartialEq
+{
+    fn eq(&self, other: &MSet<T>) -> bool {
+        let mut b: Vec<&T> = other.data.iter().collect();
+        for x in &self.data[..] {
+            let Some(i) = b.iter().position(|y| y == &x) else { return false };
+            b.remove(i);
+        }
+
+        b.is_empty()
+    }
+}
+
+impl<T> Eq for MSet<T> where T: Eq {}
